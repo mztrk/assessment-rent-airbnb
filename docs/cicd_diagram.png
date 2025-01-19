@@ -1,0 +1,14 @@
+// CI/CD Pipeline Diagram
+digraph {
+	A [label="Developer Commit"]
+	B [label="Pre-Commit Hooks"]
+	C [label="CI/CD Pipeline"]
+	D [label="Unit Tests"]
+	E [label="Integration Tests"]
+	F [label=Deployment]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+	E -> F
+}

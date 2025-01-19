@@ -1,0 +1,24 @@
+# Core libraries
+pandas
+matplotlib
+seaborn
+geopandas
+
+# Spark libraries
+pyspark
+delta-spark
+
+# Testing libraries
+pytest
+pytest-mock
+pytest-cov
+
+# Diagram generation
+graphviz
+
+# JSON parsing and validation
+jsonschema
+
+# Data serialization
+pyarrow
+fastparquet

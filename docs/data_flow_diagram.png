@@ -1,0 +1,18 @@
+// Data Flow Diagram
+digraph {
+	A [label="Airbnb Data (CSV)"]
+	B [label="Kamernet Data (JSON)"]
+	C [label="GeoJSON Data"]
+	D [label=Ingestion]
+	E [label=Cleaning]
+	F [label=Enrichment]
+	G [label=Transformations]
+	H [label="Processed Output"]
+	A -> D
+	B -> D
+	C -> F
+	D -> E
+	E -> F
+	F -> G
+	G -> H
+}
