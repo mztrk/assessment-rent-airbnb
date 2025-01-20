@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
-from geo_enrichment import enrich_airbnb_data
-from stream_ingestion import ingest_rentals_stream
-from visualization import generate_visualizations
+from src.data_pipeline.geo_enrichment import enrich_airbnb_data
+from src.data_pipeline.stream_ingestion import ingest_rentals_stream
+from src.data_pipeline.visualization import generate_visualizations
 from src.data_pipeline.ingestion import load_airbnb_data, load_geojson_data
 from src.data_pipeline.cleaning import clean_airbnb_data
 from src.data_pipeline.transformations import impute_review_scores, transform_room_type

@@ -11,11 +11,11 @@ def spark():
         .getOrCreate()
 
 def test_load_airbnb_data(spark):
-    sample_csv = "/path/to/airbnb.csv"
+    sample_csv = "data/airbnb.csv"
     df = load_airbnb_data(spark, sample_csv)
     assert df.count() > 0
 
 def test_load_geojson_data(spark):
-    sample_geojson = "/path/to/post_codes.geojson"
+    sample_geojson = "data/geo/post_codes.geojson"
     df = load_geojson_data(spark, sample_geojson)
     assert df.count() > 0

@@ -1,6 +1,7 @@
 import os
 import pytest
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType
 from src.data_pipeline.utils import save_to_delta
 
 @pytest.fixture(scope="module")

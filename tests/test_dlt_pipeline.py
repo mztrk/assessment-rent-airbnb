@@ -1,7 +1,7 @@
 import pytest
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType, IntegerType
-from src.data_pipeline.dlt_pipeline import run_pipeline
+from src.data_pipeline.dlt_pipeline import main as run_pipeline
 
 
 @pytest.fixture(scope="module")
