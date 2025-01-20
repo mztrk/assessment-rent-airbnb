@@ -14,19 +14,19 @@ The pipeline addresses the needs of real estate investors who want to identify p
 - Should properties in specific postal codes be rented short-term (via Airbnb) or long-term?
 
 ### **Challenges Addressed**
-1. **Data Quality**  
+1. **Data Quality**
    - Zip codes in Airbnb data are incomplete or messy. The pipeline enriches missing or malformed zip codes using latitude and longitude.
    - Missing review scores are imputed based on average scores for a specific postal code and room type.
 
-2. **Scalability**  
+2. **Scalability**
    - The pipeline processes large datasets using Apache Spark, enabling high performance for current and future data volumes.
    - Streaming capabilities allow real-time ingestion of rental data.
 
-3. **Actionable Insights**  
+3. **Actionable Insights**
    - Visualizations highlight average revenue by postal code and room type distribution to support data-driven decisions.
    - Enriched datasets serve as a foundation for advanced modeling and forecasting.
 
-4. **Maintainability**  
+4. **Maintainability**
    - Modular design ensures that individual pipeline components (e.g., data ingestion, geographic enrichment) can be updated independently.
    - Built using Delta Lake for versioning and efficient data storage.
 
@@ -87,4 +87,3 @@ case-rent-airbnb/
 │   ├── architecture_diagram.png
 │   ├── data_flow_diagram.png
 │   ├── methodology.md
-

@@ -8,3 +8,4 @@ repos:
     rev: 23.1a1
     hooks:
       - id: black
+        exclude: ^venv/

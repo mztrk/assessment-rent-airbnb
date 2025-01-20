@@ -1,8 +1,9 @@
 from graphviz import Digraph
 
+
 def generate_data_flow_diagram(output_path="./docs/data_flow_diagram.png"):
     dot = Digraph(comment="Data Flow Diagram", format="png")
-    
+
     # Nodes
     dot.node("A", "Airbnb Data (CSV)")
     dot.node("B", "Kamernet Data (JSON)")
@@ -21,7 +22,9 @@ def generate_data_flow_diagram(output_path="./docs/data_flow_diagram.png"):
     dot.render(output_path)
     print(f"Data flow diagram saved to {output_path}")
 
+
 generate_data_flow_diagram()
+
 
 def generate_cicd_diagram(output_path="./docs/cicd_diagram.png"):
     dot = Digraph(comment="CI/CD Pipeline Diagram", format="png")
@@ -40,5 +43,6 @@ def generate_cicd_diagram(output_path="./docs/cicd_diagram.png"):
     # Save
     dot.render(output_path)
     print(f"CI/CD diagram saved to {output_path}")
+
 
 generate_cicd_diagram()

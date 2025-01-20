@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 def generate_visualizations(airbnb_df, output_dir):
     """
     Generates visualizations for insights.
@@ -26,7 +27,9 @@ def generate_visualizations(airbnb_df, output_dir):
     # Room type distribution
     room_type_counts = airbnb_pd["room_type"].value_counts()
     plt.figure(figsize=(8, 5))
-    room_type_counts.plot(kind="pie", autopct="%1.1f%%", colors=["#ff9999","#66b3ff","#99ff99"])
+    room_type_counts.plot(
+        kind="pie", autopct="%1.1f%%", colors=["#ff9999", "#66b3ff", "#99ff99"]
+    )
     plt.title("Room Type Distribution")
     plt.ylabel("")  # Hide y-axis label
     plt.savefig(f"{output_dir}/room_type_distribution.png")

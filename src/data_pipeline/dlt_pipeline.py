@@ -7,12 +7,21 @@ from src.data_pipeline.cleaning import clean_airbnb_data
 from src.data_pipeline.transformations import impute_review_scores, transform_room_type
 from src.data_pipeline.utils import save_to_delta
 
-def main():
-    spark = SparkSession.builder.appName("DLT Pipeline").getOrCreate()
 
+def run_pipeline(spark, airbnb_path, geojson_path, rentals_path, output_path):
+    """
+    Runs the data pipeline.
+
+    Args:
+        spark (SparkSession): Spark session object.
+        airbnb_path (str): Path to Airbnb data.
+        geojson_path (str): Path to geojson data.
+        rentals_path (str): Path to rentals data.
+        output_path (str): Path to save the pipeline outputs.
+    """
     # Load Airbnb data and geo data
-    airbnb_df = load_airbnb_data(spark, "data/airbnb.csv")
-    geojson_df = load_geojson_data(spark, "data/geo/post_codes.geojson")
+    airbnb_df = load_airbnb_data(spark, airbnb_path)
+    geojson_df = load_geojson_data(spark, geojson_path)
 
     # Clean and enrich Airbnb data
     airbnb_cleaned = clean_airbnb_data(airbnb_df)
@@ -23,15 +32,41 @@ def main():
     airbnb_transformed = transform_room_type(airbnb_transformed)
 
     # Save enriched and transformed data
-    save_to_delta(airbnb_transformed, "delta/airbnb_gold")
+    save_to_delta(airbnb_transformed, f"{output_path}/airbnb_gold")
 
     # Stream rental data
-    ingest_rentals_stream(spark, "data/rentals.json", "delta/rentals_bronze")
+    ingest_rentals_stream(spark, rentals_path, f"{output_path}/rentals_bronze")
 
     # Generate visualizations
-    generate_visualizations(airbnb_transformed, "output/visualizations")
+    generate_visualizations(airbnb_transformed, f"{output_path}/visualizations")
+
+
+def main():
+    """
+    Entry point for the pipeline.
+    """
+    spark = (
+        SparkSession.builder.appName("DLT Pipeline")
+        .config("spark.jars.packages", "io.delta:delta-core_2.12:2.1.0")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config(
+            "spark.sql.catalog.spark_catalog",
+            "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+        )
+        .getOrCreate()
+    )
+
+    # Define file paths
+    airbnb_path = "data/airbnb.csv"
+    geojson_path = "data/geo/post_codes.geojson"
+    rentals_path = "data/rentals.json"
+    output_path = "delta"
+
+    # Run the pipeline
+    run_pipeline(spark, airbnb_path, geojson_path, rentals_path, output_path)
 
     spark.stop()
+
 
 if __name__ == "__main__":
     main()

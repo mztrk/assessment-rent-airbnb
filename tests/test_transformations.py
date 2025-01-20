@@ -6,24 +6,35 @@ from src.data_pipeline.transformations import impute_review_scores, transform_ro
 
 @pytest.fixture(scope="module")
 def spark():
-    return SparkSession.builder \
-        .appName("Test Transformations") \
-        .master("local[*]") \
+    return (
+        SparkSession.builder.appName("Test Transformations")
+        .master("local[*]")
+        .config("spark.jars.packages", "io.delta:delta-core_2.12:2.1.0")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config(
+            "spark.sql.catalog.spark_catalog",
+            "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+        )
         .getOrCreate()
+    )
+
 
 def test_impute_review_scores(spark):
     data = [
         ("1053", "Entire home/apt", 90.0),
         ("1053", "Entire home/apt", None),
     ]
-    schema = StructType([
-        StructField("cleaned_zipcode", StringType(), True),
-        StructField("room_type", StringType(), True),
-        StructField("review_scores_value", DoubleType(), True)
-    ])
+    schema = StructType(
+        [
+            StructField("cleaned_zipcode", StringType(), True),
+            StructField("room_type", StringType(), True),
+            StructField("review_scores_value", DoubleType(), True),
+        ]
+    )
     df = spark.createDataFrame(data, schema)
     result = impute_review_scores(df).collect()
     assert result[1]["review_scores_value"] == 90.0
+
 
 def test_transform_room_type(spark):
     data = [("Entire home/apt",), ("Private room",), ("Shared room",), ("Unknown",)]
