@@ -1,7 +1,7 @@
 import pytest
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType
-from visualization import generate_visualizations
+from src.data_pipeline.visualization import generate_visualizations
 import os
 
 @pytest.fixture(scope="module")

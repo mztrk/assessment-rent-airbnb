@@ -1,6 +1,7 @@
 import pytest
 from pyspark.sql import SparkSession
-from stream_ingestion import ingest_rentals_stream
+from pyspark.sql.types import StructType, StructField, StringType, DoubleType
+from src.data_pipeline.stream_ingestion import ingest_rentals_stream
 
 @pytest.fixture(scope="module")
 def spark():
