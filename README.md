@@ -59,31 +59,57 @@ Missing zip codes in Airbnb data are enriched using a geojson dataset of Dutch p
 ## **Directory Structure**
 
 ```plaintext
-case-rent-airbnb/
-├── data/
-│   ├── airbnb.csv
-│   ├── rentals.json
-│   ├── geo/
-│   │   ├── post_codes.geojson
-│   │   ├── amsterdam_areas.geojson
-├── src/
-│   ├── data_pipeline/
-│   │   ├── cleaning.py
-│   │   ├── enrichment.py
-│   │   ├── ingestion.py
-│   │   ├── transformations.py
-│   │   ├── utils.py
-├── dlt_pipeline.py
-├── geo_enrichment.py
-├── stream_ingestion.py
-├── visualization.py
-├── tests/
-│   ├── test_dlt_pipeline.py
-│   ├── test_geo_enrichment.py
-│   ├── test_stream_ingestion.py
-│   ├── test_visualization.py
-├── README.md
-├── docs/
-│   ├── architecture_diagram.png
-│   ├── data_flow_diagram.png
-│   ├── methodology.md
+assessment-rent-airbnb/
+│
+├── .github/workflows/                # GitHub Actions workflows for CI/CD
+│   └── ci_cd_pipeline.yml            # CI/CD pipeline configuration
+│
+├── data/                             # Dataset folder
+│   ├── geo/                          # GeoJSON and related files
+│   │   ├── amsterdam_areas.geojson   # GeoJSON file for Amsterdam areas
+│   │   ├── post_codes.geojson        # GeoJSON file for postcodes
+│   ├── airbnb.csv                    # Airbnb data in CSV format
+│   ├── rentals.json                  # Rental data in JSON format
+│
+├── docs/                             # Documentation and diagrams
+│   ├── data_flow_diagram.png         # Data flow diagram
+│   ├── cicd_diagram.png              # CI/CD process diagram
+│   └── methodology.md                # Methodology explanation
+│
+├── notebooks/                        # Jupyter notebooks for analysis
+│   └── pipeline.ipynb                # Notebook showcasing the data pipeline
+│
+├── scratch/                          # Temporary or exploratory scripts/notebooks
+│   └── exploratory_data_analysis.ipynb
+│
+├── src/                              # Source code for the data pipeline
+│   └── data_pipeline/
+│       ├── __init__.py               # Package initialization
+│       ├── cleaning.py               # Data cleaning logic
+│       ├── dlt_pipeline.py           # Delta Live Tables (DLT) pipeline
+│       ├── enrichment.py             # Enrichment functions
+│       ├── geo_enrichment.py         # Geospatial enrichment logic
+│       ├── ingestion.py              # Data ingestion logic
+│       ├── stream_ingestion.py       # Streaming data ingestion
+│       ├── transformations.py        # Transformation functions
+│       ├── utils.py                  # Utility functions
+│       └── visualization.py          # Visualization functions
+│
+├── tests/                            # Unit tests for the pipeline
+│   ├── conftest.py                   # Shared fixtures for tests
+│   ├── test_cleaning.py              # Tests for cleaning module
+│   ├── test_enrichment.py            # Tests for enrichment module
+│   ├── test_geo_enrichment.py        # Tests for geospatial enrichment
+│   ├── test_ingestion.py             # Tests for ingestion module
+│   ├── test_transformations.py       # Tests for transformation functions
+│   ├── test_visualization.py         # Tests for visualization module
+│
+├── venv/                             # Virtual environment folder (optional)
+├── .coverage                         # Coverage report
+├── .gitignore                        # Ignored files in Git
+├── .pre-commit-config.yaml           # Pre-commit hooks configuration
+├── generate_diagrams.py              # Script to generate diagrams
+├── LICENSE                           # License for the project
+├── main.py                           # Main script to execute the pipeline
+├── README.md                         # Project documentation (this file)
+└── requirements.txt                  # Python dependencies
