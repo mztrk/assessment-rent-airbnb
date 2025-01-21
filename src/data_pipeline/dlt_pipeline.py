@@ -2,9 +2,17 @@ from pyspark.sql import SparkSession
 from src.data_pipeline.geo_enrichment import enrich_airbnb_data
 from src.data_pipeline.stream_ingestion import ingest_rentals_stream
 from src.data_pipeline.visualization import generate_visualizations
-from src.data_pipeline.ingestion import load_airbnb_data, load_geojson_data
+from src.data_pipeline.ingestion import (
+    load_airbnb_data,
+    load_geojson_data,
+    load_rentals_data,
+)
 from src.data_pipeline.cleaning import clean_airbnb_data
-from src.data_pipeline.transformations import impute_review_scores, transform_room_type
+from src.data_pipeline.transformations import (
+    impute_review_scores,
+    transform_room_type,
+    calculate_investment_potential,
+)
 from src.data_pipeline.utils import save_to_delta
 
 
@@ -31,8 +39,15 @@ def run_pipeline(spark, airbnb_path, geojson_path, rentals_path, output_path):
     airbnb_transformed = impute_review_scores(airbnb_enriched)
     airbnb_transformed = transform_room_type(airbnb_transformed)
 
+    # Stream rental data
+    rentals_df = load_rentals_data(spark, rentals_path)
+
+    # Calculate investment potential
+    investment_metrics = calculate_investment_potential(airbnb_transformed, rentals_df)
+
     # Save enriched and transformed data
     save_to_delta(airbnb_transformed, f"{output_path}/airbnb_gold")
+    save_to_delta(investment_metrics, f"{output_path}/investment_metrics")
 
     # Stream rental data
     ingest_rentals_stream(spark, rentals_path, f"{output_path}/rentals_bronze")

@@ -33,3 +33,20 @@ def generate_visualizations(airbnb_df, output_dir):
     plt.title("Room Type Distribution")
     plt.ylabel("")  # Hide y-axis label
     plt.savefig(f"{output_dir}/room_type_distribution.png")
+
+
+def generate_investment_visualizations(investment_metrics, output_dir):
+    """
+    Generates visualizations for investment analysis.
+    """
+    investment_pd = investment_metrics.toPandas()
+
+    # Bar chart for revenue by investment type
+    revenue_by_type = investment_pd.groupby("investment_type")[
+        ["avg_airbnb_revenue", "avg_rental_revenue"]
+    ].mean()
+    revenue_by_type.plot(kind="bar", figsize=(10, 6), color=["skyblue", "salmon"])
+    plt.title("Average Revenue by Investment Type")
+    plt.ylabel("Revenue (€)")
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/revenue_by_investment_type.png")
