@@ -6,6 +6,12 @@ from src.data_pipeline.cleaning import clean_postcode, clean_airbnb_data
 
 @pytest.fixture(scope="module")
 def spark():
+    """
+    Creates a SparkSession for testing.
+
+    Returns:
+        SparkSession: A local SparkSession configured with Delta Lake support.
+    """
     return (
         SparkSession.builder.appName("Test Cleaning")
         .master("local[*]")
@@ -20,6 +26,16 @@ def spark():
 
 
 def test_clean_postcode():
+    """
+    Tests the clean_postcode function for various valid and invalid inputs.
+
+    Valid cases:
+        - Postcodes with 4 or more characters.
+        - Postcodes with 6 characters are split correctly (e.g., "1055XP" -> "1055 XP").
+
+    Invalid cases:
+        - Empty string and None should return None.
+    """
     # Valid postcodes
     assert clean_postcode("1053") == "1053"
     assert clean_postcode("1055XP") == "1055 XP"
@@ -29,6 +45,18 @@ def test_clean_postcode():
 
 
 def test_clean_airbnb_data(spark):
+    """
+    Tests the clean_airbnb_data function, which adds a cleaned_zipcode column to a DataFrame.
+
+    Args:
+        spark (SparkSession): The Spark session fixture.
+
+    Steps:
+        - Create a sample DataFrame with sample Airbnb data.
+        - Apply the clean_airbnb_data function.
+        - Validate the results for the cleaned_zipcode column and other unaffected columns.
+    """
+    # Sample data with various zipcode formats and room types.
     data = [
         ("1053", 52.37302064, 4.868460923, "Entire home/apt"),
         (None, 52.36190508, 4.888050037, "Private room"),

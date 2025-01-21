@@ -6,6 +6,12 @@ from src.data_pipeline.geo_enrichment import enrich_airbnb_data
 
 @pytest.fixture(scope="module")
 def spark():
+    """
+    Creates a SparkSession for testing.
+
+    Returns:
+        SparkSession: A local SparkSession configured with Delta Lake support.
+    """
     return (
         SparkSession.builder.appName("Test Geo Enrichment")
         .master("local[*]")
@@ -20,6 +26,19 @@ def spark():
 
 
 def test_enrich_airbnb_data(spark):
+    """
+    Tests the enrich_airbnb_data function, which enriches Airbnb data with geographical
+    information from a GeoJSON dataset.
+
+    Args:
+        spark (SparkSession): The Spark session fixture.
+
+    Steps:
+        - Prepare sample Airbnb and GeoJSON data.
+        - Apply the enrich_airbnb_data function.
+        - Validate that the 'zipcode' column in the Airbnb data is updated correctly based
+          on the GeoJSON data.
+    """
     airbnb_data = [
         ("52.37302064", "4.868460923", None),
         ("52.36190508", "4.888050037", "1055"),

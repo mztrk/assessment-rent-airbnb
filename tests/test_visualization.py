@@ -7,6 +7,12 @@ import os
 
 @pytest.fixture(scope="module")
 def spark():
+    """
+    Pytest fixture to initialize a SparkSession for testing.
+
+    Returns:
+        SparkSession: A local SparkSession configured with Delta Lake support.
+    """
     return (
         SparkSession.builder.appName("Test Visualization")
         .master("local[*]")
@@ -21,6 +27,18 @@ def spark():
 
 
 def test_generate_visualizations(spark, tmp_path):
+    """
+    Tests the `generate_visualizations` function to ensure it creates expected visualization files.
+
+    Args:
+        spark (SparkSession): The Spark session fixture.
+        tmp_path (Path): Temporary path fixture provided by pytest.
+
+    Steps:
+        - Create a test DataFrame with sample Airbnb data.
+        - Generate visualizations using the function.
+        - Verify that the expected PNG files are created in the output directory.
+    """
     data = [
         ("1053", "EntireHomeApt", 120.0),
         ("1055", "PrivateRoom", 80.0),

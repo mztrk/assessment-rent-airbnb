@@ -6,6 +6,12 @@ from src.data_pipeline.transformations import impute_review_scores, transform_ro
 
 @pytest.fixture(scope="module")
 def spark():
+    """
+    Pytest fixture to initialize a SparkSession for testing.
+
+    Returns:
+        SparkSession: A local SparkSession configured with Delta Lake support.
+    """
     return (
         SparkSession.builder.appName("Test Transformations")
         .master("local[*]")
@@ -20,6 +26,17 @@ def spark():
 
 
 def test_impute_review_scores(spark):
+    """
+    Tests the `impute_review_scores` function to ensure it fills missing review scores with the average.
+
+    Args:
+        spark (SparkSession): The Spark session fixture.
+
+    Steps:
+        - Create a test DataFrame with missing review scores.
+        - Apply the `impute_review_scores` transformation.
+        - Assert that missing scores are correctly imputed with the average value for the group.
+    """
     data = [
         ("1053", "Entire home/apt", 90.0),
         ("1053", "Entire home/apt", None),
@@ -37,6 +54,17 @@ def test_impute_review_scores(spark):
 
 
 def test_transform_room_type(spark):
+    """
+    Tests the `transform_room_type` function to ensure room types are standardized.
+
+    Args:
+        spark (SparkSession): The Spark session fixture.
+
+    Steps:
+        - Create a test DataFrame with different room types.
+        - Apply the `transform_room_type` transformation.
+        - Assert that room types are mapped correctly to the expected standardized values.
+    """
     data = [("Entire home/apt",), ("Private room",), ("Shared room",), ("Unknown",)]
     schema = StructType([StructField("room_type", StringType(), True)])
     df = spark.createDataFrame(data, schema)

@@ -4,13 +4,17 @@ import pandas as pd
 
 def generate_visualizations(airbnb_df, output_dir):
     """
-    Generates visualizations for insights.
+    Generates visualizations for insights from the Airbnb dataset.
 
     Args:
         airbnb_df (pyspark.sql.DataFrame): Transformed Airbnb DataFrame.
         output_dir (str): Directory to save visualizations.
+
+    Outputs:
+        - A bar chart of average price by postcode.
+        - A pie chart of room type distribution.
     """
-    # Convert to Pandas for visualization
+    # Convert PySpark DataFrame to Pandas for visualization
     airbnb_pd = airbnb_df.toPandas()
 
     # Average price by postcode
@@ -22,6 +26,7 @@ def generate_visualizations(airbnb_df, output_dir):
     plt.ylabel("Average Price (€)")
     plt.xticks(rotation=45)
     plt.tight_layout()
+    # Save the bar chart to the specified output directory
     plt.savefig(f"{output_dir}/average_price_by_postcode.png")
 
     # Room type distribution
@@ -31,22 +36,33 @@ def generate_visualizations(airbnb_df, output_dir):
         kind="pie", autopct="%1.1f%%", colors=["#ff9999", "#66b3ff", "#99ff99"]
     )
     plt.title("Room Type Distribution")
-    plt.ylabel("")  # Hide y-axis label
+    plt.ylabel("")  # Hide y-axis label for cleaner output
+    # Save the pie chart to the specified output directory
     plt.savefig(f"{output_dir}/room_type_distribution.png")
 
 
 def generate_investment_visualizations(investment_metrics, output_dir):
     """
-    Generates visualizations for investment analysis.
+    Generates visualizations for investment analysis metrics.
+
+    Args:
+        investment_metrics (pyspark.sql.DataFrame): DataFrame containing investment analysis metrics.
+        output_dir (str): Directory to save visualizations.
+
+    Outputs:
+        - A bar chart of average revenue by investment type.
     """
+    # Convert PySpark DataFrame to Pandas for visualization
     investment_pd = investment_metrics.toPandas()
 
-    # Bar chart for revenue by investment type
+    # Bar chart for average revenue by investment type
     revenue_by_type = investment_pd.groupby("investment_type")[
         ["avg_airbnb_revenue", "avg_rental_revenue"]
     ].mean()
-    revenue_by_type.plot(kind="bar", figsize=(10, 6), color=["skyblue", "salmon"])
+    plt.figure(figsize=(10, 6))
+    revenue_by_type.plot(kind="bar", color=["skyblue", "salmon"])
     plt.title("Average Revenue by Investment Type")
     plt.ylabel("Revenue (€)")
     plt.tight_layout()
+    # Save the bar chart to the specified output directory
     plt.savefig(f"{output_dir}/revenue_by_investment_type.png")

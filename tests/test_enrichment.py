@@ -6,6 +6,12 @@ from src.data_pipeline.enrichment import enrich_postcodes
 
 @pytest.fixture(scope="module")
 def spark():
+    """
+    Creates a SparkSession for testing.
+
+    Returns:
+        SparkSession: A local SparkSession configured with Delta Lake support.
+    """
     return (
         SparkSession.builder.appName("Test Enrichment")
         .master("local[*]")
@@ -20,6 +26,18 @@ def spark():
 
 
 def test_enrich_postcodes(spark):
+    """
+    Tests the enrich_postcodes function, which enriches Airbnb data with postcode information
+    from GeoJSON data based on latitude and longitude matching.
+
+    Args:
+        spark (SparkSession): The Spark session fixture.
+
+    Steps:
+        - Prepare sample Airbnb and GeoJSON data.
+        - Apply the enrich_postcodes function.
+        - Validate that the 'zipcode' column in the Airbnb data is updated correctly.
+    """
     # Prepare test data
     airbnb_data = [
         (52.37302064, 4.868460923, "1000"),  # Existing zipcode
